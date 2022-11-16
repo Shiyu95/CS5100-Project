@@ -11,10 +11,10 @@ import numpy as np
 
 
 app = Dash(__name__)
-#app = dash.Dash()
 server = app.server
 scaler=MinMaxScaler(feature_range=(0,1))
 
+#import dataSet for application
 df_nse = pd.read_csv("NSE-TATA.csv")
 df_nse["Date"]=pd.to_datetime(df_nse.Date,format="%Y-%m-%d")
 df_nse.index=df_nse['Date']
@@ -98,9 +98,9 @@ app.layout = html.Div([
                 )                
             ])                
         ]),
-        dcc.Tab(label='Facebook Stock Data', children=[
+        dcc.Tab(label='Company Stock Data', children=[
             html.Div([
-                html.H1("Facebook Stocks High vs Lows", 
+                html.H1("Company Stocks High vs Lows",
                         style={'textAlign': 'center'}),
               
                 dcc.Dropdown(id='my-dropdown',

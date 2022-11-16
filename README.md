@@ -19,3 +19,11 @@ We build a dashboard using Plotly dash for stock analysis.
 - Environment: web sites
 - Actuators: Display to user
 - Sensors: web pages (text, graphic, scripts)
+
+
+## 4. Stock Price Analysis Dashboard Application:
+- NSE-TATAGLOBAL Stock Data Web Application Display
+
+  ![My Image](/Users/shiyuhuang/PycharmProjects/pythonProject/Img/ActualClo.png)
+  ![My Image](/Users/shiyuhuang/PycharmProjects/pythonProject/Img/LSTMClo.png)
+
