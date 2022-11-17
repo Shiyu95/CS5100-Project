@@ -1,7 +1,8 @@
 #Importing the Libraries
-from dash import Dash, html, dcc
-from dash import dcc
-from dash import html
+from dash import Dash, html, dcc  # importing the dash framework
+from dash import dcc # importing the core components from dash
+from dash import html # importing the html components from dash
+import dash_bootstrap_components as dbc
 import pandas as pd
 import plotly.graph_objs as go
 from dash.dependencies import Input, Output
@@ -9,8 +10,8 @@ from keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 
-
-app = Dash(__name__)
+# creating a new instance of Dash
+app = Dash(__name__,external_stylesheets=[dbc.themes.UNITED])
 server = app.server
 scaler=MinMaxScaler(feature_range=(0,1))
 
@@ -20,6 +21,7 @@ df_nse["Date"]=pd.to_datetime(df_nse.Date,format="%Y-%m-%d")
 df_nse.index=df_nse['Date']
 data=df_nse.sort_index(ascending=True,axis=0)
 new_data=pd.DataFrame(index=range(0,len(df_nse)),columns=['Date','Close'])
+# sort dataSet by Data, Close
 for i in range(0,len(data)):
     new_data["Date"][i]=data['Date'][i]
     new_data["Close"][i]=data["Close"][i]
@@ -52,12 +54,13 @@ train=new_data[:987]
 valid=new_data[987:]
 valid['Predictions']=closing_price
 df= pd.read_csv("stock_data.csv")
+# Data Visualization With Graphs
+# set app layout
 app.layout = html.Div([
-   
+    html.Br(),
     html.H1("Stock Price Analysis Dashboard", style={"textAlign": "center"}),
-   
+    html.Br(),
     dcc.Tabs(id="tabs", children=[
-       
         dcc.Tab(label='NSE-TATAGLOBAL Stock Data',children=[
             html.Div([
                 html.H2("Actual closing price",style={"textAlign": "center"}),
@@ -127,6 +130,7 @@ app.layout = html.Div([
         ])
     ])
 ])
+# callbacks
 @app.callback(Output('highlow', 'figure'),
               [Input('my-dropdown', 'value')])
 def update_graph(selected_dropdown):
@@ -162,6 +166,7 @@ def update_graph(selected_dropdown):
                    'rangeslider': {'visible': True}, 'type': 'date'},
              yaxis={"title":"Price (USD)"})}
     return figure
+# callbacks
 @app.callback(Output('volume', 'figure'),
               [Input('my-dropdown2', 'value')])
 def update_graph(selected_dropdown_value):
@@ -191,5 +196,6 @@ def update_graph(selected_dropdown_value):
                    'rangeslider': {'visible': True}, 'type': 'date'},
              yaxis={"title":"Transactions Volume"})}
     return figure
+# telling our app to start the server if we are running this file
 if __name__=='__main__':
     app.run_server(debug=True)
