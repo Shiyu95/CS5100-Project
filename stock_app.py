@@ -18,7 +18,7 @@ server = app.server
 scaler=MinMaxScaler(feature_range=(0,1))
 
 #import dataSet for application
-df_nse = pd.read_csv("NSE-TATA.csv")
+df_nse = pd.read_csv("NFLX.csv")
 df_nse["Date"]=pd.to_datetime(df_nse.Date,format="%Y-%m-%d")
 df_nse.index=df_nse['Date']
 data=df_nse.sort_index(ascending=True,axis=0)
@@ -30,8 +30,8 @@ for i in range(0,len(data)):
 new_data.index=new_data.Date
 new_data.drop("Date",axis=1,inplace=True)
 dataset=new_data.values
-train=dataset[0:987,:]
-valid=dataset[987:,:]
+train=dataset[0:1007,:]
+valid=dataset[1007:,:]
 scaler=MinMaxScaler(feature_range=(0,1))
 scaled_data=scaler.fit_transform(dataset)
 #split the data into x_train and y_train dataset
@@ -58,8 +58,8 @@ X_test=np.reshape(X_test,(X_test.shape[0],X_test.shape[1],1))
 #get the models predicted price values
 closing_price=model.predict(X_test)
 closing_price=scaler.inverse_transform(closing_price)
-train=new_data[:987]
-valid=new_data[987:]
+train=new_data[:1007]
+valid=new_data[1007:]
 valid['Predictions']=closing_price
 df= pd.read_csv("stock_data.csv")
 
@@ -70,7 +70,7 @@ app.layout = html.Div([
     html.H1("Stock Price Analysis Dashboard", style={"textAlign": "center"}),
     html.Br(),
     dcc.Tabs(id="tabs", children=[
-        dcc.Tab(label='NSE-TATAGLOBAL Stock Data',children=[
+        dcc.Tab(label='NFLX Stock Data',children=[
             html.Div([
                 html.H2("Actual closing price",style={"textAlign": "center"}),
 
@@ -120,9 +120,9 @@ app.layout = html.Div([
                 dcc.Dropdown(id='my-dropdown',
                              options=[{'label': 'Tesla', 'value': 'TSLA'},
                                       {'label': 'Apple','value': 'AAPL'}, 
-                                      {'label': 'Facebook', 'value': 'FB'}, 
+                                      {'label': 'META', 'value': 'META'},
                                       {'label': 'Microsoft','value': 'MSFT'}], 
-                             multi=True,value=['FB'],
+                             multi=True,value=['META'],
                              style={"display": "block", "margin-left": "auto", 
                                     "margin-right": "auto", "width": "60%"}),
                 dcc.Graph(id='highlow'),
@@ -131,9 +131,9 @@ app.layout = html.Div([
                 dcc.Dropdown(id='my-dropdown2',
                              options=[{'label': 'Tesla', 'value': 'TSLA'},
                                       {'label': 'Apple','value': 'AAPL'}, 
-                                      {'label': 'Facebook', 'value': 'FB'},
+                                      {'label': 'META', 'value': 'META'},
                                       {'label': 'Microsoft','value': 'MSFT'}], 
-                             multi=True,value=['FB'],
+                             multi=True,value=['META'],
                              style={"display": "block", "margin-left": "auto", 
                                     "margin-right": "auto", "width": "60%"}),
                 dcc.Graph(id='volume')
@@ -145,7 +145,7 @@ app.layout = html.Div([
 @app.callback(Output('highlow', 'figure'),
               [Input('my-dropdown', 'value')])
 def update_graph(selected_dropdown):
-    dropdown = {"TSLA": "Tesla","AAPL": "Apple","FB": "Facebook","MSFT": "Microsoft",}
+    dropdown = {"TSLA": "Tesla","AAPL": "Apple","META": "META","MSFT": "Microsoft",}
     trace1 = []
     trace2 = []
     for stock in selected_dropdown:
@@ -181,7 +181,7 @@ def update_graph(selected_dropdown):
 @app.callback(Output('volume', 'figure'),
               [Input('my-dropdown2', 'value')])
 def update_graph(selected_dropdown_value):
-    dropdown = {"TSLA": "Tesla","AAPL": "Apple","FB": "Facebook","MSFT": "Microsoft",}
+    dropdown = {"TSLA": "Tesla","AAPL": "Apple","META": "META","MSFT": "Microsoft",}
     trace1 = []
     for stock in selected_dropdown_value:
         trace1.append(
