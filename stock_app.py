@@ -18,7 +18,7 @@ server = app.server
 scaler=MinMaxScaler(feature_range=(0,1))
 
 #import dataSet for application
-df_nse = pd.read_csv("NFLX.csv")
+df_nse = pd.read_csv("NFLX_NEW.csv")
 df_nse["Date"]=pd.to_datetime(df_nse.Date,format="%Y-%m-%d")
 df_nse.index=df_nse['Date']
 data=df_nse.sort_index(ascending=True,axis=0)
@@ -79,7 +79,7 @@ app.layout = html.Div([
                     figure={
                         "data":[
                             go.Scatter(
-                                x=train.index,
+                                x=valid.index,
                                 y=valid["Close"],
                                 mode='markers'
                             )
