@@ -15,10 +15,12 @@ import numpy as np
 # creating a new instance of Dash
 app = Dash(__name__,external_stylesheets=[dbc.themes.UNITED])
 server = app.server
+#Data Normalization:Normalization is changing the values of numeric columns
+#in the dataset to a common scale, which helps the performance of our model
 scaler=MinMaxScaler(feature_range=(0,1))
 
 #import dataSet for application
-df_nse = pd.read_csv("NFLX_NEW.csv")
+df_nse = pd.read_csv("NFLX.csv")
 df_nse["Date"]=pd.to_datetime(df_nse.Date,format="%Y-%m-%d")
 df_nse.index=df_nse['Date']
 data=df_nse.sort_index(ascending=True,axis=0)
@@ -35,6 +37,7 @@ valid=dataset[1007:,:]
 scaler=MinMaxScaler(feature_range=(0,1))
 scaled_data=scaler.fit_transform(dataset)
 #split the data into x_train and y_train dataset
+#Incorporating Timesteps Into Data
 x_train,y_train=[],[]
 for i in range(60,len(train)):
     x_train.append(scaled_data[i-60:i,0])
