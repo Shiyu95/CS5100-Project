@@ -355,6 +355,21 @@ app.layout = html.Div([
                                     "margin-right": "auto", "width": "60%"}),
                 dcc.Graph(
                     id="Actual Data",
+                    # figure={
+                    #     "data":[
+                    #         go.Scatter(
+                    #             x=valid.index,
+                    #             y=valid["Close"],
+                    #             mode='markers'
+                    #         )
+                    #     ],
+                    #     "layout":go.Layout(
+                    #         title='scatter plot',
+                    #         xaxis={'title':'Date'},
+                    #         yaxis={'title':'Closing Rate'}
+                    #     )
+                    #
+                    # }
                 ),
                 html.H2("LSTM Predicted closing price",style={"textAlign": "center"}),
                 dcc.Dropdown(id='company-dropdown2',
@@ -368,20 +383,20 @@ app.layout = html.Div([
                                     "margin-right": "auto", "width": "60%"}),
                 dcc.Graph(
                     id="Predicted Data",
-                    figure={
-                        "data":[
-                            go.Scatter(
-                                x=valid_NFLX.index,
-                                y=valid_NFLX["Predictions"],
-                                mode='markers'
-                            )
-                        ],
-                        "layout":go.Layout(
-                            title='scatter plot',
-                            xaxis={'title':'Date'},
-                            yaxis={'title':'Closing Rate'}
-                        )
-                    }
+                   # figure={
+                        # "data":[
+                        #     go.Scatter(
+                        #         x=valid_NFLX.index,
+                        #         y=valid_NFLX["Predictions"],
+                        #         mode='markers'
+                        #     )
+                        # ],
+                        # "layout":go.Layout(
+                        #     title='scatter plot',
+                        #     xaxis={'title':'Date'},
+                        #     yaxis={'title':'Closing Rate'}
+                        # )
+                   # }
                 )                
             ])                
         ]),
@@ -418,6 +433,49 @@ app.layout = html.Div([
 # callbacks
 @app.callback(Output('Actual Data', 'figure'),
               [Input('company-dropdown', 'value')])
+def update_graph(selected_dropdown):
+    dropdown = {"TSLA": "Tesla","AAPL": "Apple","META": "META","MSFT": "Microsoft", "NFLX":"Netflix"}
+    trace1 = []
+    for stock in selected_dropdown:
+        trace1.append(
+          go.Scatter(x=validData[validData["Stock"] == stock]["Date"],
+                     y=validData[validData["Stock"] == stock]["Close"],
+                     mode='lines+markers',
+                     name=f'High {dropdown[stock]}',textposition='bottom center'))
+    traces = [trace1]
+    data = [val for sublist in traces for val in sublist]
+    figure = {'data': data,
+              'layout': go.Layout(colorway=["#5E0DAC", '#FF4F00', '#375CB1',
+                                            '#FF7400', '#FFF400', '#FF0056'],
+            height=600,
+            title=f"Actual Close Price for {', '.join(str(dropdown[i]) for i in selected_dropdown)} Over Time",
+            xaxis={"title":"Date",
+                   'rangeselector': {'buttons': list([{'count': 1, 'label': '1M',
+                                                       'step': 'month',
+                                                       'stepmode': 'backward'},
+                                                      {'count': 6, 'label': '6M',
+                                                       'step': 'month',
+                                                       'stepmode': 'backward'},
+                                                      {'count': 1, 'label': 'YTD',
+                                                       'step': 'year',
+                                                       'stepmode': 'todate'},
+                                                      {'count': 1, 'label': '1Y',
+                                                       'step': 'year',
+                                                       'stepmode': 'backward'},
+                                                      {'count': 3, 'label': '3Y',
+                                                       'step': 'year',
+                                                       'stepmode': 'backward'},
+                                                      {'count': 5, 'label': '5Y',
+                                                       'step': 'year',
+                                                       'stepmode': 'backward'},
+                                                      {'step': 'all'}])},
+                   'rangeslider': {'visible': True}, 'type': 'date'},
+             yaxis={"title":"Close Rate (USD)"})}
+    return figure
+
+
+@app.callback(Output('Predicted Data', 'figure'),
+              [Input('company-dropdown2', 'value')])
 def update_graph(selected_dropdown):
     dropdown = {"TSLA": "Tesla","AAPL": "Apple","META": "META","MSFT": "Microsoft", "NFLX":"Netflix"}
     trace1 = []
