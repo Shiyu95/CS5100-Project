@@ -23,7 +23,8 @@ We build a dashboard using Plotly dash for stock analysis.
 
 ## 4. Stock Price Analysis Dashboard Application:
 - NSE-TATAGLOBAL Stock Data Web Application Display
-
   ![My Image](/Img/ActualClo.png)
   ![My Image](/Img/LSTMClo.png)
+  ![My Image](/Img/CompanyHighVsLow.png)
+  ![My Image](/Img/CompanyVolume.png)
 
