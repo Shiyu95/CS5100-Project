@@ -462,7 +462,7 @@ def update_graph(selected_dropdown):
               'layout': go.Layout(colorway=["#5E0DAC", '#FF4F00', '#375CB1',
                                             '#FF7400', '#FFF400', '#FF0056'],
             height=600,
-            title=f"Actual Close Price for {', '.join(str(dropdown[i]) for i in selected_dropdown)} Over Time",
+            title=f"Predicted Close Price for {', '.join(str(dropdown[i]) for i in selected_dropdown)} Over Time",
             xaxis={"title":"Date",
                    'rangeselector': {'buttons': list([{'count': 1, 'label': '1M',
                                                        'step': 'month',
