@@ -14,7 +14,7 @@ import numpy as np
 
 # creating a new instance of Dash
 app = Dash(__name__,external_stylesheets=[dbc.themes.UNITED])
-server = app.server
+application = app.server
 #Data Normalization:Normalization is changing the values of numeric columns
 #in the dataset to a common scale, which helps the performance of our model
 scaler=MinMaxScaler(feature_range=(0,1))
@@ -355,21 +355,6 @@ app.layout = html.Div([
                                     "margin-right": "auto", "width": "60%"}),
                 dcc.Graph(
                     id="Actual Data",
-                    # figure={
-                    #     "data":[
-                    #         go.Scatter(
-                    #             x=valid.index,
-                    #             y=valid["Close"],
-                    #             mode='markers'
-                    #         )
-                    #     ],
-                    #     "layout":go.Layout(
-                    #         title='scatter plot',
-                    #         xaxis={'title':'Date'},
-                    #         yaxis={'title':'Closing Rate'}
-                    #     )
-                    #
-                    # }
                 ),
                 html.H2("LSTM Predicted closing price",style={"textAlign": "center"}),
                 dcc.Dropdown(id='company-dropdown2',
@@ -383,20 +368,6 @@ app.layout = html.Div([
                                     "margin-right": "auto", "width": "60%"}),
                 dcc.Graph(
                     id="Predicted Data",
-                   # figure={
-                        # "data":[
-                        #     go.Scatter(
-                        #         x=valid_NFLX.index,
-                        #         y=valid_NFLX["Predictions"],
-                        #         mode='markers'
-                        #     )
-                        # ],
-                        # "layout":go.Layout(
-                        #     title='scatter plot',
-                        #     xaxis={'title':'Date'},
-                        #     yaxis={'title':'Closing Rate'}
-                        # )
-                   # }
                 )                
             ])                
         ]),
@@ -441,7 +412,7 @@ def update_graph(selected_dropdown):
           go.Scatter(x=validData[validData["Stock"] == stock]["Date"],
                      y=validData[validData["Stock"] == stock]["Close"],
                      mode='lines+markers',
-                     name=f'High {dropdown[stock]}',textposition='bottom center'))
+                     name=f'{dropdown[stock]}',textposition='bottom center'))
     traces = [trace1]
     data = [val for sublist in traces for val in sublist]
     figure = {'data': data,
@@ -484,7 +455,7 @@ def update_graph(selected_dropdown):
           go.Scatter(x=validData[validData["Stock"] == stock]["Date"],
                      y=validData[validData["Stock"] == stock]["Predictions"],
                      mode='lines+markers',
-                     name=f'High {dropdown[stock]}',textposition='bottom center'))
+                     name=f'{dropdown[stock]}',textposition='bottom center'))
     traces = [trace1]
     data = [val for sublist in traces for val in sublist]
     figure = {'data': data,
@@ -607,4 +578,4 @@ def update_graph(selected_dropdown_value):
     return figure
 # telling our app to start the server if we are running this file
 if __name__=='__main__':
-    app.run_server(debug=True)
+    application.run(host='0.0.0.0', port='8081')
