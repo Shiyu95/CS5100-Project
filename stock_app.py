@@ -59,18 +59,18 @@ for i in range(0, len(data_NFLX)):
     new_data_NFLX["Date"][i] = data_NFLX['Date'][i]
     new_data_NFLX["Close"][i] = data_NFLX["Close"][i]
 
-# data index out of range and throw ValueError
-try:
-    new_data_NFLX["Date"][-2] = data_NFLX['Date'][-2]
-except ValueError:
-    print("Your dataset is out of range")
+# # data index out of range and throw ValueError
+# try:
+#     new_data_NFLX["Date"][-2] = data_NFLX['Date'][-2]
+# except ValueError:
+#     print("Your dataset is out of range")
 
-# test year out of range and throw ValueError
-try:
-    i = 2077
-    new_data_NFLX["Date"][i] = data_NFLX['Date'][i]
-except ValueError:
-    print("Your dataset is out of range")
+# # test year out of range and throw ValueError
+# try:
+#     i = 2077
+#     new_data_NFLX["Date"][i] = data_NFLX['Date'][i]
+# except ValueError:
+#     print("Your dataset is out of range")
 
 
 new_data_NFLX.index = new_data_NFLX.Date
@@ -86,18 +86,18 @@ for i in range(0, len(data_AAPL)):
     new_data_AAPL["Date"][i] = data_AAPL['Date'][i]
     new_data_AAPL["Close"][i] = data_AAPL["Close"][i]
 
-# data index out of range and throw ValueError
-try:
-    data_AAPL["Date"][-2] = data_AAPL['Date'][-2]
-except ValueError:
-    print("Your dataset is out of range")
-
-# test year out of range and throw ValueError
-try:
-    i = 2077
-    data_AAPL["Date"][i] = data_AAPL['Date'][i]
-except ValueError:
-    print("Your dataset is out of range")
+# # data index out of range and throw ValueError
+# try:
+#     data_AAPL["Date"][-2] = data_AAPL['Date'][-2]
+# except ValueError:
+#     print("Your dataset is out of range")
+#
+# # test year out of range and throw ValueError
+# try:
+#     i = 2077
+#     data_AAPL["Date"][i] = data_AAPL['Date'][i]
+# except ValueError:
+#     print("Your dataset is out of range")
 
 new_data_AAPL.index = new_data_AAPL.Date
 new_data_AAPL.drop("Date", axis=1, inplace=True)
